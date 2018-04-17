@@ -8,9 +8,14 @@ module MetropolApi
       company_or_business_registration: '005'
     }.freeze
 
-    def valid_identity_types
+    def valid_identity_types(identity_type)
       raise ArgumentError, 'The id type you provided is not valid' unless
-      IDENTITY_TYPES.has_key? id_type
+      valid_identity_types? identity_type
+      IDENTITY_TYPES[identity_type]
+    end
+
+    def valid_identity_types?(identity_type)
+       IDENTITY_TYPES.has_key? identity_type
     end
   end
 end
