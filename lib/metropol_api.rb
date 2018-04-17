@@ -5,7 +5,7 @@ require 'metropol_api/report'
 module MetropolApi
   class << self
 
-    attr_accessor:public_key, :private_key, :port, :api_version
+    attr_accessor :public_key, :private_key, :port, :api_version
 
     def report
       @report ||= MetropolApi::Report.new(public_key: @public_key,
