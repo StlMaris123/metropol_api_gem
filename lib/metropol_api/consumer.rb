@@ -19,19 +19,19 @@ module MetropolApi
       fetch(path, payload, identity_type, identity_number)
     end
 
-    def deliquency_status(loan_amount: 0, identity_type: nil, identity_number: nil)
+    def delinquency_status(loan_amount: 0, identity_type: nil, identity_number: nil)
       payload = { report_type: 2, loan_amount: loan_amount }
-      path = 'deliquency/status'
+      path = 'delinquency/status'
       fetch(path, payload, identity_type, identity_number)
     end
 
     def consumer_credit(identity_type: nil, identity_number: nil)
       payload = { report_type: 3 }
       path = 'score/consumer'
-      fetch(path, payload, identity_number, identity_path)
+      fetch(path, payload, identity_type, identity_number)
     end
 
-    def noncredit_information(identity_number: nil, identity_type: nil)
+    def non_credit_information(identity_number: nil, identity_type: nil)
       payload = { report_type: 6 }
       path = 'identity/scrub'
       fetch(path, payload, identity_type, identity_number)
