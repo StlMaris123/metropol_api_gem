@@ -12,7 +12,7 @@ module MetropolApi
       @api_version = api_version
     end
 
-    def pdf_report(identity_type: nil, identity_number: nil, credit_type: nil, report_reason: 1)
+    def pdf_report(identity_type: nil, identity_number: nil, report_reason: 1)
       payload = { report_type: 4, report_reason: report_reason }
       path = 'report/pdf'
       fetch(path, payload, identity_type, identity_number)
