@@ -13,7 +13,7 @@ module MetropolApi
     include MetropolApi::ReportReason
     include MetropolApi::IdentityType
 
-    def initialize(private_key:, public_key:, path:, port:, api_version:, payload: {})
+    def initialize(public_key:, private_key:, path:, port:, api_version:, payload: {})
       @private_key = private_key
       @public_key = public_key
       @path = path
@@ -24,9 +24,10 @@ module MetropolApi
 
     def api_headers
       headers = default_headers
+      @api_timestamp = api_timestamp
       headers['X-METROPOL-REST-API-KEY'] = @public_key
-      headers['X-METROPOL-REST-API-TIMESTAMP'] = rest_api_hash(api_timestamp)
-      headers['X-METROPOL-REST-API-HASH'] = api_timestamp
+      headers['X-METROPOL-REST-API-TIMESTAMP'] = @api_timestamp
+      headers['X-METROPOL-REST-API-HASH'] = rest_api_hash(@api_timestamp)
       headers
     end
 
@@ -59,12 +60,21 @@ module MetropolApi
       if valid_identity_types? method_name
         @payload[:identity_number] = args.first
         @payload[:identity_type] = valid_identity_types(method_name)
-        return post
+        match_api_hash!
+         return post
       end
       super
     end
 
     private
+
+    def match_api_hash!
+      partition = @payload.partition do |key, value|
+        [:report_type, :identity_number, :identity_type].include? key
+      end
+      @payload = partition.flatten(1).to_h
+    end
+
 
     def port
       @port || DEFAULT_PORT

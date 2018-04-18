@@ -31,7 +31,7 @@ module MetropolApi
       fetch(path, payload, identity_type, identity_number)
     end
 
-    def non_credit_information(identity_number: nil, identity_type: nil)
+    def non_credit_information(identity_type: nil, identity_number: nil)
       payload = { report_type: 6 }
       path = 'identity/scrub'
       fetch(path, payload, identity_type, identity_number)
@@ -41,8 +41,9 @@ module MetropolApi
 
     def fetch(path, payload, identity_type, identity_number)
       valid_request = check_request_status(path, payload)
-      return valid_request.send(identity_type, identity_number) if
-      request_has_valid? identity_type, identity_number
+      if request_has_valid? identity_type, identity_number
+        return valid_request.send(identity_type, identity_number) 
+      end
       valid_request
     end
 
