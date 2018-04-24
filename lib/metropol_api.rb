@@ -21,5 +21,9 @@ module MetropolApi
                                             api_version: @api_version)
 
     end
+
+    def configure
+      yield self
+    end
   end
 end
